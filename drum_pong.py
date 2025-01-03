@@ -8,6 +8,10 @@ from input_handler import InputHandler
 
 # Initialize Pygame
 pygame.init()
+pygame.mixer.init()
+
+# Load the drum sound file
+drum_sound = pygame.mixer.Sound("sounds\\drum_sound.wav")
 
 # Set the display size
 screen_width = 800
@@ -155,7 +159,7 @@ while running:
         # Handle BPM adjustment (using the InputHandler)
         new_bpm, bpm_adjusted = input_handler.handle_bpm_adjustment(bpm, event, dt)
 
-        # Handle BPM adjustment (from your existing code)
+        # Handle BPM adjustment 
 ##        if event.type == pygame.KEYDOWN:
 ##            if event.key == pygame.K_UP:
 ##                bpm += 10
@@ -172,21 +176,22 @@ while running:
     sequence_duration = 60 / bpm * beats_per_measure * measures_per_sequence
 
     # Handle other game events (e.g., key presses)
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_r:  # Press 'r' to start recording
-            recording = True
-            start_recording_time = time.time()  # Update recording start time
-            pattern = []
-            print("Recording started")  # Indicate recording start
-        elif event.key == pygame.K_s:  # Press 's' to stop recording
-            recording = False
-            print("Recording stopped")  # Indicate recording stop
-
+##    if event.type == pygame.KEYDOWN:
+##        if event.key == pygame.K_r:  # Press 'r' to start recording
+##            recording = True
+##            start_recording_time = time.time()  # Update recording start time
+##            pattern = []
+##            print("Recording started")  # Indicate recording start
+##        elif event.key == pygame.K_s:  # Press 's' to stop recording
+##            recording = False
+##            print("Recording stopped")  # Indicate recording stop
+    start_recording_time = time.time()
 
     # Handle MIDI input
-    if midi_in and recording:
+    if midi_in: #and recording:
         for msg in midi_in.iter_pending():
             if msg.type == 'note_on':
+                drum_sound.play()
                 elapsed_time_since_start = time.time() - start_recording_time
                 pattern.append(elapsed_time_since_start)
 
